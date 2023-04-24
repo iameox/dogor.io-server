@@ -1,2 +1,2 @@
 # dogor.io-server
-A small game based on Ogar, written in TypeScript using Node.js 18.
+Small game based on Ogar, written in TypeScript using Node.js 18. 
