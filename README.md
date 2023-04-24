@@ -11,7 +11,7 @@ To install the client, run the following commands:
 $ git clone https://github.com/iameox/dogor.io-server.git
 $ cd dogor.io-server
 $ npm install
-$ mv .env.sample .env
+$ cp .env.sample .env
 ```
 
 The file `.env` contains environment variables. You may edit them as you like.  
