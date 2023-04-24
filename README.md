@@ -2,7 +2,7 @@
 Small game based on Ogar, written in TypeScript using Node.js 18. 
 
 ## Prerequisites
-You need Node.js 18.16+ and NPM 9.5.1+ installed.  
+You need Node.js 18.16+ and NPM 9.5+ installed.  
 This guide assumes Node.js is available behind the `node` alias, and NPM behind `npm`.
 
 ## Installation
