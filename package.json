@@ -1,15 +1,17 @@
 {
     "name": "dogor.io-server",
     "version": "0.1.0",
-    "description": "",
+    "description": "Small game based on Ogar, written in TypeScript using Node.js 18.",
+    "homepage": "https://github.com/iameox/dogor.io-server#readme",
+    "bugs": "https://github.com/iameox/dogor.io-server/issues",
+    "repository": "github:iameox/dogor.io-server",
     "main": "dist/index.js",
     "scripts": {
-        "clean": "rimraf dist",
         "build": "tsc && tsc-alias",
-        "start": "node -r dotenv/config dist/index.js"
+        "clean": "rimraf dist"
     },
     "author": "Yann Grandgirard",
-    "license": "ISC",
+    "license": "MIT",
     "dependencies": {
         "ajv": "^8.12.0",
         "dotenv": "^16.0.3",

@@ -5,7 +5,6 @@ import { EntityType } from '@models/entities';
 import { GameFactory, IGame } from '@models/games';
 import { Configuration } from 'Configuration';
 import { Server as HTTPServer } from 'http';
-import Process from 'process';
 import Util from 'util';
 import { Server as WSServer, WebSocket } from 'ws';
 
@@ -55,10 +54,10 @@ export class Application implements IApplication {
             ws.on('close', ws.socket.onClose.bind(ws.socket));
         });
 
-        Process.on('uncaughtException', this.stop.bind(this));
-        Process.on('unhandledRejection', this.stop.bind(this));
-        Process.on('SIGTERM', this.stop.bind(this));
-        Process.on('SIGINT', this.stop.bind(this));
+        process.on('uncaughtException', this.stop.bind(this));
+        process.on('unhandledRejection', this.stop.bind(this));
+        process.on('SIGTERM', () => this.stop());
+        process.on('SIGINT', () => this.stop());
     }
 
     public async start(): Promise<void> {
@@ -78,25 +77,28 @@ export class Application implements IApplication {
         }, Configuration.SERVER_TICK);
     }
 
-    public async stop(error?: unknown): Promise<void> {
-        if (error)
-            console.error(error);
+    public async stop(reason?: unknown): Promise<void> {
+        if (reason)
+            console.error(reason);
 
         try {
-            clearInterval(this._clock);
-
-            await this._game.stop();
-            await Promise.all([
-                Util.promisify(this._wsServer.close.bind(this._wsServer))(),
+            const promises = [
+                Util.promisify(this._httpServer.close.bind(this._httpServer))(),
                 Util.promisify(this._wsServer.close.bind(this._wsServer))()
-            ]);
-            this._httpServer.closeAllConnections()
-            await Util.promisify(this._httpServer.close.bind(this._httpServer))();
+            ];
+
+            this._httpServer.closeAllConnections();
+            for (let ws of this._wsServer.clients)
+                ws.terminate();
+
+            clearInterval(this._clock);
+            await Promise.all(promises);
+            await this._game.stop();
 
         } catch (error) {
             console.warn(error);
         }
 
-        Process.exit(error ? 1 : 0);
+        process.exit(reason ? 1 : 0);
     }
 }

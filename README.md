@@ -26,5 +26,5 @@ $ npm run build
 ## Run the code
 To start the server, run the following command:
 ```
-$ npm run start
+$ node dist/index.js
 ```
